@@ -1,138 +1,96 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { AiFillEye, AiFillGithub } from 'react-icons/ai'
 import { motion } from 'framer-motion'
 
-
 import { AppWrap, MotionWrap } from '../../warpper'
-import {urlFor, client } from '../../client'
+import { urlFor, client } from '../../client'
 
 import './Work.scss'
+
+const FILTERS = ['UI/UX', 'Web App', 'Graphic Design', 'React JS', 'All']
+
 const Work = () => {
-
   const [activeFilter, setActiveFilter] = useState('All')
-  const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 })
   const [works, setWorks] = useState([])
-  const [filterWork, setFilterWork] = useState([])
 
+  useEffect(() => {
+    const query = '*[_type == "works"]'
 
-   useEffect(() => {
-   const query = '*[_type == "works"]';
+    client.fetch(query).then((data) => {
+      setWorks(data)
+    })
+  }, [])
 
-   client.fetch(query).then((data) => {
-     setWorks(data);
-     setFilterWork(data);
-   })
-   }, [])
+  const visible =
+    activeFilter === 'All'
+      ? works
+      : works.filter((work) => Array.isArray(work?.tags) && work.tags.includes(activeFilter))
 
-   const handleWorkFilter = (item) => {
-    setActiveFilter(item);
-    setAnimateCard([{ y: 100, opacity: 0 }]);
-  
-    setTimeout(() => {
-      setAnimateCard([{ y: 0, opacity: 1 }]);
-  
-      if (item === 'All') {
-        setFilterWork(works);
-      } else {
-        setFilterWork(
-          works.filter((work) => Array.isArray(work?.tags) && work.tags.includes(item))
-        );
-      }
-    }, 500);
-  };
-  
   return (
     <>
-    
-    <h2 className='head-text'>
-      My Creative
-      <span> Portfolio</span>
-    </h2>
-
-    <div className='app__work-filter'>
-    {['UI/UX', 'Web App', 'Graphic Design', 'React JS', 'All'].map((item, index) => (
-       <div
-       
-        key={index}
-          onClick={() => handleWorkFilter(item)}
-          className={`app__work-filter-item app__flex p-text ${activeFilter === item ? 'item-active' : ''}`}
-        >
-          {item}
-
+      <div className="section__head section__head--split">
+        <div>
+          <p className="section__eyebrow">My work</p>
+          <h2 className="section__title">
+            My creative <span>portfolio.</span>
+          </h2>
         </div>
-      
-    ))}
-    </div>
 
-    <motion.div
-    animate={animateCard}
-    transition={{duration: 0.5, delayChildren: 0.5}}
-    className='app__work-portfolio'
-    >
-
-      {filterWork.map((work, index) => (
-        <div className='app__work-item app__flex' key={index}>
-          <div className='app__work-img app__flex'>
-            <img src={urlFor(work.imgUrl)} alt={work.name} />
-
-            <motion.div
-            whileHover={{ opacity: [0, 1] }}
-            transition={{ duration: 0.25, ease: 'easeInOut', staggerChildren: 0.5 }}
-            className='app__work-hover app__flex'
+        <div className="app__work-filter" role="group" aria-label="Filter projects">
+          {FILTERS.map((item) => (
+            <button
+              type="button"
+              key={item}
+              onClick={() => setActiveFilter(item)}
+              aria-pressed={activeFilter === item}
+              className={`app__work-filter-item ${activeFilter === item ? 'item-active' : ''}`}
             >
-              <a href={work.projectLink} target='_blank' rel='norefer'>
-                <motion.div
-                whileInView={{ scale: [0, 1] }}
-                whileHover={{ scale: [1, 0.9] }}
-                transition={{ duration: 0.25 }}
-                className='app__flex'
-                >
-                  <AiFillEye />
-                </motion.div>
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
 
-
-              </a>
-
-
-              <a href={work.codeLink} target='_blank' rel='norefer'>
-                <motion.div
-                whileInView={{ scale: [0, 1] }}
-                whileHover={{ scale: [1, 0.9] }}
-                transition={{ duration: 0.25 }}
-                className='app__flex'
-                >
-                  <AiFillGithub />
-                </motion.div>
-
-
-              </a>
- 
-            </motion.div>
-
-          </div>
-
-          <div className="app__work-content app__flex">
-              <h4 className="bold-text">{work.title}</h4>
-              <p className="p-text" style={{ marginTop: 10 }}>{work.description}</p>
-
-              <div className="app__work-tag app__flex">
-              <p className="p-text">{work?.tags?.[0] || 'No tag'}</p>
-
-
-              </div>
+      <div className="app__work-portfolio">
+        {visible.map((work) => (
+          <motion.article
+            layout
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="app__work-item glass"
+            key={work._id || work.title}
+          >
+            <div className="app__work-img">
+              <img src={urlFor(work.imgUrl)} alt={work.title} loading="lazy" />
             </div>
 
+            <div className="app__work-content">
+              <span className="app__work-tag">{work?.tags?.[0] || 'Project'}</span>
+              <h3>{work.title}</h3>
+              <p>{work.description}</p>
 
-
-        </div>
-      ))}
-    </motion.div>
-    </> 
+              <div className="app__work-links">
+                {work.projectLink && (
+                  <a href={work.projectLink} target="_blank" rel="noopener noreferrer">
+                    <AiFillEye aria-hidden="true" /> View project
+                  </a>
+                )}
+                {work.codeLink && (
+                  <a href={work.codeLink} target="_blank" rel="noopener noreferrer">
+                    <AiFillGithub aria-hidden="true" /> Code
+                  </a>
+                )}
+              </div>
+            </div>
+          </motion.article>
+        ))}
+      </div>
+    </>
   )
 }
 
 export default AppWrap(
   MotionWrap(Work, 'app__works'),
   'work',
-  'app__primarybg',
-);
+)

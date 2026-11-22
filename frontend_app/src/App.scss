@@ -1,189 +1,194 @@
+// ---------- App shell ----------
 .app {
-    background-color: var(--primary-color);
-    font-family: var(--font-base);
+  position: relative;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+// Soft coloured glows that the glass cards blur against.
+.app__bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+
+  span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: var(--blob-opacity);
   }
-  
-  .app__whitebg {
-    background-color: var(--white-color);
+
+  span:nth-child(1) {
+    width: 46vw;
+    height: 46vw;
+    max-width: 680px;
+    max-height: 680px;
+    top: -8%;
+    right: -6%;
+    background: var(--blob-a);
   }
-  
-  .app__primarybg {
-    background-color: var(--primary-color);
+
+  span:nth-child(2) {
+    width: 38vw;
+    height: 38vw;
+    max-width: 560px;
+    max-height: 560px;
+    top: 45%;
+    left: -10%;
+    background: var(--blob-b);
+    opacity: calc(var(--blob-opacity) * 0.7);
   }
-  
-  .app__container {
-    width: 100%;
-    min-height: 100vh;
-  
+
+  span:nth-child(3) {
+    width: 42vw;
+    height: 42vw;
+    max-width: 620px;
+    max-height: 620px;
+    bottom: -10%;
+    right: 10%;
+    background: var(--blob-c);
+    opacity: calc(var(--blob-opacity) * 0.85);
+  }
+}
+
+.app__content {
+  position: relative;
+  z-index: 1;
+}
+
+// ---------- Glass ----------
+.glass {
+  background: var(--card);
+  border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), var(--shadow);
+}
+
+// ---------- Section scaffolding ----------
+.app__section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 140px 32px 0;
+
+  @media screen and (max-width: 700px) {
+    padding: 96px 20px 0;
+  }
+}
+
+.section__head {
+  text-align: center;
+  margin-bottom: 56px;
+
+  &--split {
     display: flex;
-    flex-direction: row;
-  }
-  
-  .app__flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .app__wrapper {
-    flex: 1;
-    width: 100%;
-    flex-direction: column;
-    padding: 4rem 2rem;
-  
-    @media screen and (max-width: 450px) {
-      padding: 4rem 1rem 2rem;
-    }
-  }
-  
-  .copyright {
-    width: 100%;
-    padding: 2rem 0 0;
-  
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: flex-end;
-  
-    p {
-      text-transform: uppercase;
-      color: var(--black-color);
-    }
-  }
-  
-  .head-text {
-    font-size: 2.75rem;
-    font-weight: 800;
-    text-align: center;
-    color: var(--black-color);
-    text-transform: capitalize;
-  
-    span {
-      color: var(--secondary-color);
-    }
-  
-    @media screen and (min-width: 2000px) {
-      font-size: 4rem;
-    }
-  
-    @media screen and (max-width: 450px) {
-      font-size: 2rem;
-    }
-  }
-  
-  .p-text {
-    font-size: 0.8rem;
+    gap: 32px;
+    flex-wrap: wrap;
     text-align: left;
-    color: var(--gray-color);
-    line-height: 1.5;
-  
-    @media screen and (min-width: 2000px) {
-      font-size: 1.75rem;
-    }
   }
-  
-  .bold-text {
-    font-size: 1rem;
-    font-weight: 800;
-    color: var(--black-color);
-    text-align: left;
-  
-    @media screen and (min-width: 2000px) {
-      font-size: 2rem;
-    }
-  
-    @media screen and (max-width: 450px) {
-      font-size: 0.9rem;
-    }
+}
+
+.section__eyebrow {
+  font-family: var(--font-head);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 16px;
+}
+
+.section__title {
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  max-width: 900px;
+  margin: 0 auto;
+
+  span {
+    color: var(--acc);
   }
-  
-  .app__social {
+
+  .section__head--split & {
+    margin: 0;
+  }
+}
+
+// ---------- Buttons & chips ----------
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 32px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &--primary {
+    background: var(--acc);
+    border-color: transparent;
+    color: var(--on-acc);
+    box-shadow: 0 8px 34px var(--glow);
+  }
+
+  &--ghost {
+    background: var(--card);
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
+  }
+
+  &--sm {
+    min-height: 48px;
+    padding: 0 24px;
+    font-size: 15px;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+// ---------- Footer bar ----------
+.app__footer-bar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 72px 32px 40px;
+
+  div {
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
-  
-    padding: 1rem;
-  
-    div {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--white-color);
-      margin: 0.25rem 0;
-      border: 1px solid var(--lightGray-color);
-  
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  
-      transition: all 0.3s ease-in-out;
-  
-      svg {
-        width: 15px;
-        height: 15px;
-        color: var(--gray-color);
-      }
-  
-      &:hover {
-        background-color: var(--secondary-color);
-        border-color: var(--secondary-color);
-  
-        svg {
-          color: var(--white-color);
-        }
-      }
-  
-      @media screen and (min-width: 2000px) {
-        width: 70px;
-        height: 70px;
-  
-        margin: 0.5rem 0;
-  
-        svg {
-          width: 30px;
-          height: 30px;
-        }
-      }
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--mute);
+
+    a {
+      color: var(--ink);
+      font-weight: 600;
     }
   }
-  
-  .app__navigation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  
-    padding: 1rem;
-  
-    .app__navigation-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: #cbcbcb;
-      margin: 0.5rem;
-  
-      transition: background-color 0.2s ease-in-out;
-  
-      &:hover {
-        background-color: var(--secondary-color);
-      }
-  
-      @media screen and (min-width: 2000px) {
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-  
-  @media screen and (max-width: 500px) {
-    .app__navigation,
-    .app__social {
-      display: none;
-    }
-  
-    .copyright {
-      padding: 2rem;
-    }
-  }
-  
+}
