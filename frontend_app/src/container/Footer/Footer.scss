@@ -1,131 +1,142 @@
-.app__footer {
-    flex: 1;
-    width: 100%;
-    flex-direction: column;
-  
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-    }
+.app__footer-panel {
+  padding: 56px;
+  border-radius: 32px;
+  display: flex;
+  gap: 56px;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 700px) {
+    padding: 24px;
+    gap: 32px;
   }
-  
-  .app__footer-cards {
-    width: 60%;
+}
+
+.app__footer-cards {
+  flex: 1 1 340px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.app__footer-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+  font-weight: 600;
+  font-size: 16px;
+  word-break: break-word;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--acc);
+  }
+
+  > span {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--acc);
+    color: var(--on-acc);
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
-    flex-wrap: wrap;
-    margin: 4em 2rem 2rem;
-  
-    .app__footer-card {
-      min-width: 290px;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-  
-      margin: 1rem 0;
-      padding: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: #fef4f5;
-  
-      transition: all 0.3s ease-in-out;
-  
-      img {
-        width: 40px;
-        height: 40px;
-        margin: 0 0.7rem;
-      }
-  
-      p {
-        font-weight: 500;
-      }
-      a {
-        text-decoration: none;
-        font-weight: 500;
-      }
-      &:hover {
-        box-shadow: 0 0 25px #fef4f5;
-      }
-  
-      @media screen and (max-width: 450px) {
-        width: 100%;
-      }
-    }
-  
-    @media screen and (max-width: 768px) {
-      width: 100%;
-    }
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 6px 22px var(--glow);
   }
-  
-  .app__footer-cards .app__footer-card:last-child {
-    background-color: #f2f7fb;
+
+  small {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--mute);
   }
-  
-  .app__footer-cards .app__footer-card:last-child:hover {
-    box-shadow: 0 0 25px #f2f7fb;
-  }
-  
-  .app__footer-form {
-    width: 60%;
+}
+
+.app__footer-note {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--mute);
+}
+
+.app__footer-form {
+  flex: 1.2 1 400px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  label {
+    display: flex;
     flex-direction: column;
-    margin: 1rem 2rem;
-  
-    div {
-      width: 100%;
-  
-      margin: 0.75rem 0;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: var(--primary-color);
-  
-      transition: all 0.3s ease-in-out;
-  
-      input,
-      textarea {
-        width: 100%;
-        padding: 0.95rem;
-        border: none;
-        border-radius: 7px;
-        background-color: var(--primary-color);
-  
-        font-family: var(--font-base);
-        color: var(--secondary-color);
-        outline: none;
-      }
-  
-      textarea {
-        height: 170px;
-      }
-  
-      &:hover {
-        box-shadow: 0 0 25px var(--primary-color);
-      }
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  input,
+  textarea {
+    padding: 0 20px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--bg-soft);
+    color: var(--ink);
+    font-size: 16px;
+
+    &::placeholder {
+      color: var(--mute);
+      opacity: 0.8;
     }
-  
-    button {
-      padding: 1rem 2rem;
-      border-radius: 10px;
-      border: none;
-      background-color: var(--secondary-color);
-  
-      font-weight: 500;
-      color: var(--white-color);
+
+    &:focus {
       outline: none;
-      margin: 2rem 0 0 0;
-      font-family: var(--font-base);
-  
-      transition: cubic-bezier(0.55, 0.085, 0.68, 0.53);
-      cursor: pointer;
-  
-      &:hover {
-        background-color: #2430af;
-      }
-    }
-  
-    @media screen and (max-width: 768px) {
-      width: 100%;
-      margin: 1rem 0;
+      border-color: var(--acc);
+      box-shadow: 0 0 0 3px var(--glow);
     }
   }
-  
+
+  input {
+    height: 56px;
+  }
+
+  textarea {
+    height: 140px;
+    padding-top: 16px;
+    resize: none;
+  }
+
+  button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+}
+
+.app__footer-error {
+  font-size: 14px;
+  color: #ff7a7a;
+}
+
+.app__footer-thanks {
+  flex: 1.2 1 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+
+  h3 {
+    font-family: var(--font-head);
+    font-size: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    color: var(--mute);
+  }
+}
